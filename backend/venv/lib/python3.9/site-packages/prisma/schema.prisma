@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider             = "prisma-client-py"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model BatteryCell {
+  id           Int      @id @default(autoincrement())
+  serialNumber String   @map("serial_number")
+  model        String
+  energy       Float
+  capacity     Float
+  voltage      Float
+  imageFile    String   @map("image_file")
+  processedAt  DateTime @default(now()) @map("processed_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("battery_cells")
+}
+
+model BatchProcess {
+  id          Int      @id @default(autoincrement())
+  batchName   String   @map("batch_name")
+  totalCells  Int      @map("total_cells")
+  processedAt DateTime @default(now()) @map("processed_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("batch_processes")
+}
